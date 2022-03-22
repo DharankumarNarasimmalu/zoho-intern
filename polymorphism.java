@@ -20,8 +20,6 @@ class Youtubeband{
 }
 class polymorphism{
 	public static void main(String[] args) {
-		Scanner
-		
 		Youtube yt=new App();
 		yt.youtube();
 	}
