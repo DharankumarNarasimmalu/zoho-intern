@@ -1,35 +1,35 @@
-package ottplatform;
+
 import java.io.Console;
 import java.util.*;
 class User{
 	String name;
-	int plan;
+	int planamount;
 	Plan plandetails;
 	public User(String name, int plan,Plan p) {
 		this.name=name;
-		this.plan=plan;
+		this.planamount=plan;
 		this.plandetails=p;
 	}
 	void display() {
-		System.out.println("NAME: "+name+'\n'+"PLAN: "+plan);
+		System.out.println("NAME: "+name+'\n'+"PLAN: "+planamount);
 	}
 	//Check the plan according to paid amount
 	void check() {
-		if (plan==999) {
+		if (planamount==999) {
 			plandetails.superplan();
 		}
-		else if (plan==499) {
+		else if (planamount==499) {
 			plandetails.betterplan();
 		}
-		else if (plan==799) {
+		else if (planamount==799) {
 			plandetails.mediumplan();
 		}
-		else if(plan==199) {
+		else if(planamount==199) {
 			plandetails.basicplan();
 		}
 	}
 }
-class Plan{
+    class Plan{
 	public List<String>Str=new ArrayList<String>();
 	public void add(String s) {
 		Str.add(s);
@@ -39,19 +39,28 @@ class Plan{
 		Scanner sc=new Scanner(System.in);
 		int planno=sc.nextInt();
 		if (planno<=5) {
-			Movie m=new Movie(Str.get(planno));
-			m.play();
-			System.out.println("press 0 to play || press 1 to pause || Press 2 to stop ");
+			Movie.moviename=Str.get(planno);
+			Movie m;
+			m=new Play();
+			m.action();
+			Movie.moviename=Str.get(planno);
 			int action=sc.nextInt();
 			while(true) {
 				action=sc.nextInt();
 				if (action==2) {
-					m.stop();
+					m=new Stop();
+					m.action();
 					break;}
-			    else if (action==1) {
-			    	m.pause();
+			    else if (action ==1) {
+			    	m=new Pause();
+			    	m.action();
 			    	continue;	
 				}
+			    else if (action==0) {
+			    	m=new Play();
+			    	m.action();
+			    	continue;
+			    }
 			}
 		}
 		else {
@@ -63,20 +72,28 @@ class Plan{
 		Scanner sc=new Scanner(System.in);
 		int planno=sc.nextInt();
 		if (planno<=4) {
-			Movie m=new Movie(Str.get(planno));
-			m.play();
-			System.out.println("press 0 to play || press 1 to pause || Press 2 to stop ");
+			Movie.moviename=Str.get(planno);
+			Movie m;
+			m=new Play();
+			m.action();
+			Movie.moviename=Str.get(planno);
 			int action=sc.nextInt();
 			while(true) {
 				action=sc.nextInt();
 				if (action==2) {
-					m.stop();
+					m=new Stop();
+					m.action();
 					break;}
 			    else if (action ==1) {
-			    	m.pause();
-			    	continue;
-			    	
+			    	m=new Pause();
+			    	m.action();
+			    	continue;	
 				}
+			    else if (action==0) {
+			    	m=new Play();
+			    	m.action();
+			    	continue;
+			    }
 			}
 		}
 		else {
@@ -90,19 +107,28 @@ class Plan{
 		Scanner sc=new Scanner(System.in);
 		int planno=sc.nextInt();
 		if (planno<=3) {
-			Movie m=new Movie(Str.get(planno));
-			m.play();
+			Movie.moviename=Str.get(planno);
+			Movie m;
+			m=new Play();
+			m.action();
+			Movie.moviename=Str.get(planno);
 			int action=sc.nextInt();
 			while(true) {
 				action=sc.nextInt();
 				if (action==2) {
-					m.stop();
+					m=new Stop();
+					m.action();
 					break;}
 			    else if (action ==1) {
-			    	m.pause();
-			    	continue;
-			    	
+			    	m=new Pause();
+			    	m.action();
+			    	continue;	
 				}
+			    else if (action==0) {
+			    	m=new Play();
+			    	m.action();
+			    	continue;
+			    }
 			}
 		}
 		else {
@@ -116,19 +142,28 @@ class Plan{
 		Scanner sc=new Scanner(System.in);
 		int planno=sc.nextInt();
 		if (planno<=3) {
-			Movie m=new Movie(Str.get(planno));
-			m.play();
+			Movie.moviename=Str.get(planno);
+			Movie m;
+			m=new Play();
+			m.action();
+			Movie.moviename=Str.get(planno);
 			int action=sc.nextInt();
 			while(true) {
 				action=sc.nextInt();
 				if (action==2) {
-					m.stop();
+					m=new Stop();
+					m.action();
 					break;}
 			    else if (action ==1) {
-			    	m.pause();
-			    	continue;
-			    	
+			    	m=new Pause();
+			    	m.action();
+			    	continue;	
 				}
+			    else if (action==0) {
+			    	m=new Play();
+			    	m.action();
+			    	continue;
+			    }
 			}
 		}
 		else {
@@ -136,21 +171,26 @@ class Plan{
 		}
 	}
 }
-class Movie{
-	String moviename;
-	Movie(String moviename){
-		this.moviename=moviename;
+abstract class Movie{
+	static String moviename;
+//	static void setMethod(String moviename1){
+//		moviename=moviename1;}
+	abstract void  action();
 	}
-	void play() {
+class Play extends Movie {
+	void action() {
 		System.out.println("|PLAY|"+moviename);
-	}
-	void pause() {
+	}}
+class Pause extends Movie{
+	void action() {
 		System.out.println("|PAUSE|"+moviename);
-	}
-	void stop() {
-		System.out.println("|STOP|"+moviename);
-	}
+	}}
+class Stop extends Movie{
+	void action() {
+	System.out.println("|STOP|"+moviename);
+    }
 }
+
 public class Amazonprime {
 	public static void main(String...args) {
 		// map to get user name and plan
@@ -166,8 +206,9 @@ public class Amazonprime {
 		movie.add("Kaithi");
 		movie.add("Maanadu");
 		movie.add("IPL");
+		List<String>Series=new ArrayList<>();
 		Plan p=new Plan();
-		for(int i=0;i<5;i++) {
+		for(int i=0;i<5;i++){
 			p.add(movie.get(i));
 		}
 		// Map to get the userid and password
