@@ -1,34 +1,32 @@
-abstract class figure{
-    double dim1,dim2;
-    figure(double x,double y){
-        dim1=x;
-        dim2=y;
-    }
-    abstract double area();
+package thisExample;
+
+import java.util.Scanner;
+class SuperParent{
+	void print() {
+		System.out.println("Iam super parent class");
+	}
 }
-class rectangle extends figure{
-    rectangle(double a,double b){
-        super(a,b);
-    }
-    double area(){
-        System.out.println("rec area");
-        return dim1*dim2;
-    }
+class Parent extends SuperParent{
+//	void print() {
+//		System.out.println("Iam imediate parent class");
+//	}
 }
-class triangle extends figure{
-    triangle(double x,double y){
-        super(x,y);
-    }
-    double area(){
-        System.out.println("triangle area");
-        return dim1*dim2/2;
-    }
+class Child extends Parent{
+//	void print(){
+//		System.out.println("Hello Google");
+//	}
+	void show(){
+	super.print();//if we use super it invokes the method in imediate  parent class
+	System.out.println("Iam child class");
+	this.print();//it invokes current class or invoke imediate parent class is method not in current class
+	}
 }
-class Main{
-    public static void main(String[] args){
-        rectangle obj=new rectangle(5,3);
-        System.out.println("rec Area:"+obj.area());
-        triangle tri=new triangle(10,8);
-        System.out.println("tri area:"+tri.area());
-    }
+public class Main {
+	public static void main(String...args) {
+		Child c=new Child();
+		c.show();
+		
+		
+	}
+
 }

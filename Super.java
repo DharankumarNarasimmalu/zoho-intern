@@ -1,21 +1,32 @@
-package composition2;
-class Main{
-	Main(int n,String S){
-		
+package superExample;
+
+import java.util.Scanner;
+class SuperParent{
+	void print() {
+		System.out.println("Iam super parent class");
 	}
 }
-class Sub extends Main{
-
-	Sub(int n, String S) {
-		super(n, S);
-		System.out.println(n+" "+S);
-		System.out.println(5+" "+"Kumar");
+class Parent{
+	void print() {
+		System.out.println("Iam imediate parent class");
 	}
-	
+}
+class Child extends Parent{
+	void print(){
+		System.out.println("Iam child class");
+	}
+	void show(){
+	super.print();//if we use super it invokes the method in imediate  parent class
+	System.out.println("Print statement inside show method");
+	this.print();//it invokes current class
+	}
 }
 public class Super {
 	public static void main(String...args) {
-		Main m=new Main(2,"Dharan");
-		Sub s=new Sub(5, "asd");
+		Child c=new Child();
+		c.show();
+		
+		
 	}
+
 }

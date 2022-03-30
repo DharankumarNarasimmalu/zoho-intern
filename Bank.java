@@ -2,61 +2,45 @@ package composition2;
 import java.io.Console;
 import java.util.*;
 class User{
-	static protected String username;
-	static protected String accountno;
-	static protected double balance;
-	static protected String phno;
-	static protected Action action;
-	final String Bankname="CENTRAL BANK OF INDIA";
-	public void set(String[] s,Action action)
+	  String username;
+	  String accountno;
+	  double balance;
+	  String phno;
+	  static final String Bankname="CENTRAL BANK OF INDIA";
+	  User(String[] s)
 	{
 		username=s[0];
 		accountno=s[1];
 		balance=Double.parseDouble(s[2]);
 		phno=s[3];
-		this.action=action;
 		}
-	public void  check() {
-		System.out.println("Welcome to "+Bankname);
-		Scanner sc=new Scanner(System.in);
-		System.out.println("press 1 to cash withdraw||press 2 to deposit||"
-				+ "press 3 to balanceEnquiry||press 4 to print slip||press 5 to exit");
-		
-		while(true) {
-		int actionNo=sc.nextInt();
-		switch(actionNo) {
-		case(1):
-			action.withdraw();
-		    break;
-		case(2):
-			action.deposit();
-		    break;
-		case(3):
-			action.balanceEnquiry();
-		    break;
-		case(4):
-			action.printSlip();
-		    break;
-		case(5):
-			System.out.println("Exit");
-		    return;
-		default:
-			System.out.println("Invalid commend");
-		    }
-	    }
-	}
 }
-class Action extends User{
-	public void withdraw(){
+class Transaction extends User{
+	Transaction(String[] s) {
+		super(s);
+	}
+	public void transfer(){
 		Scanner sc=new Scanner (System.in);
 		System.out.println("Enter Amount");
 		double amount=sc.nextDouble();
 		if (balance<=amount) {
-			System.out.println("INSUFFICIENT AMOUNT\nBALANCE: "+super.balance);
+			System.out.println("INSUFFICIENT AMOUNT\nBALANCE: "+balance);
 		}
 		else {
 			balance-=amount;
-		System.out.println("Your balance amount: "+super.balance);
+		System.out.println("Your balance amount: "+balance);
+		}
+	}
+	public void transfer(String name) {
+		Scanner sc=new Scanner (System.in);
+		System.out.println("Enter Amount");
+		double amount=sc.nextDouble();
+		if (balance<=amount) {
+			System.out.println("INSUFFICIENT AMOUNT\nBALANCE: "+balance);
+		}
+		else {
+			balance-=amount;
+		System.out.println("Money "+amount+" transfer to "+name+'\n'+"your account balance=> "+balance);
 		}
 	}
 	public void deposit() {
@@ -64,16 +48,19 @@ class Action extends User{
 		System.out.println("Enter Amount");
 		double amount=sc.nextDouble();
 		balance+=amount;
-		System.out.println("Your balance amount: "+super.balance);
+		System.out.println("Your balance amount: "+balance);
 	}
 	public void balanceEnquiry() {
-		System.out.println("Your balance amount: "+super.balance);
+		System.out.println("Your balance amount: "+balance);
 	}
 	public void printSlip() {
-		System.out.println("Name: "+super.username+'\n'+"Account number: "+super.accountno+'\n'+"Phone number: "+super.phno+'\n'+"Balance: "+super.balance);
+		System.out.println("Name: "+username+'\n'+"Account number: "+accountno+'\n'+"Phone number: "+phno+'\n'+"Balance: "+balance);
 	}
+	
+	
 }
 public class Bank {
+	
 	public static void main(String...args) {
 		int newUser=0;
 		String user1[]= {"Dharan","123546","2900","9876543210"};
@@ -92,7 +79,8 @@ public class Bank {
 		pass.put("Raj","789");
 		pass.put("Karthic","456");
 		boolean validusername=true;
-		while(validusername) {
+		boolean login=true;
+		while(validusername || login) {
 		Console c=System.console();
 		String username=c.readLine("Enter username: ");
 	    char[]ch=c.readPassword("enter password: ");
@@ -100,20 +88,54 @@ public class Bank {
 		System.out.println(password);
 		
 		try {
-			boolean login=true;
-		while(login) {
+
 		if (pass.get(username).equals(password)) {
 			login=false;
-			User accountdetails=new User();
-			Action action=new Action();
-			for(String[] S:user) {
-				if (S[0].equals(username)) {
-					accountdetails.set(S,action);
-					accountdetails.check();
+			
+			Bank b=new Bank();
+			String userAccount []=new String[4];
+			for(String[] s:user) {
+				if (s[0].equals(username)) {
+					for(int i=0;i<4;i++) {
+						userAccount[i]=s[i];
+					}
 					break;
 				}
 			}
-		}
+			User accountdetails=new User(userAccount);
+			Transaction act=new Transaction(userAccount);
+				System.out.println("Welcome to "+User.Bankname);
+				Scanner sc=new Scanner(System.in);
+				System.out.println("press 1 to cash withdraw||press 2 to deposit||"
+						+ "press 3 to balanceEnquiry||press 4 to print slip||press 5 to money transfer||press 6 to exit");
+				
+				while(true) {
+				int actionNo=sc.nextInt();
+				switch(actionNo) {
+				case(1):
+					act.transfer();
+				    break;
+				case(2):
+					act.deposit();
+				    break;
+				case(3):
+					act.balanceEnquiry();
+				    break;
+				case(4):
+					act.printSlip();
+				    break;
+				case(6):
+					System.out.println("Exit");
+				    return;
+				case(5):
+					System.out.println("Enter receiver name");
+					act.transfer(sc.next());
+					break;
+				default:
+					System.out.println("Invalid commend");
+				    }
+			    }
+			}
 		else{
 			System.out.println("Invalid Password");
 			System.out.println("Press 1 to login again or press 2 to exit");
@@ -125,8 +147,7 @@ public class Bank {
 			else {
 				login=false;
 			}
-			
-		}}
+		}
 		validusername=false;
 	}
 		catch (NullPointerException e){
@@ -152,11 +173,11 @@ public class Bank {
 				}
 		    else if(newUser==0) {
 		    	return;
-		    }
+		        }
 		    else {
 		    	System.out.println("invalid commend");
-		    }
-		    }
-		}
+		         }
+		     }
+	    }
 	}
 }

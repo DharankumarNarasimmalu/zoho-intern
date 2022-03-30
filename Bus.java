@@ -1,126 +1,117 @@
-package busreservation;
+package busreservstion;
 import java.util.*;
-class Busdetails {
-	static  Map<Integer, Integer> AC=new HashMap<Integer,Integer>();
-	static Map<Integer, Integer> NONAC=new HashMap<Integer,Integer>();
-	void addval() {
-		AC.put(121,50);
-		AC.put(122,50);
-		AC.put(123,50);
-		AC.put(124,50);
-		AC.put(125, 0);
-		NONAC.put(125,50);
-		NONAC.put(121,50);
-		NONAC.put(122,50);
-		NONAC.put(123,50);
-		NONAC.put(124,50);
-		NONAC.put(125,50);
+class User{
+	String customername;
+	String busNo;
+	int seatNo;
+	String date;
+	int totalSeatsInBus;
+	User(String name,String busno,int seatno,String date,int totalSeats){
+		customername=name;
+		busNo=busno;
+		seatNo=seatno;
+		this.date=date;
+	    totalSeatsInBus=totalSeats;
 	}
-	void setdata(){
-		System.out.println("Enter bus number");
-		Scanner sc=new Scanner(System.in);
-		int busNo=sc.nextInt();
-		System.out.println("Enter number of seats");
-		int NOSeats=sc.nextInt();
-		System.out.println("enter 1 if BUS is AC or press 0 if BUS is NONAC");
-		int Type=sc.nextInt();
-		if (Type==1) {
-			AC.put(busNo,NOSeats);
-		}
-		else if (Type==0) {
-			NONAC.put(busNo,NOSeats);
-		}
-	}
-	void getdata() {
-		System.out.println("AC BUSES");
-		for(Map.Entry e:AC.entrySet()) {
-			System.out.println(e.getKey()+" "+e.getValue());
-		}
-		System.out.println("NON AC BUSES");
-		for(Map.Entry e:NONAC.entrySet()) {
-			System.out.println(e.getKey()+" "+e.getValue());
-		}
-	}
+//	void display() {
+//		System.out.println(customername+busNo+seatNo+date+totalSeatsInBus);
+//	}
 }
-class Customerdetails extends Busdetails{
-	String PassengerName;
-	int Age;
-	int busno;
-	int seatNO;
-	String d;
-	int ACorNOT;
-	Date date;
-	void setval(String name,int age,int busno,int seatno,String dateinput,int  AC) {
-		this.PassengerName=name;
-		this.Age=age;
-		this.busno=busno;
-		this.seatNO=seatno;
-		this.d=dateinput;
-		this.ACorNOT=AC;
+class Reservation extends User{
+	Reservation(String name,String busno,int seatno,String date,int totalSeats) {
+		super(name,busno,seatno,date,totalSeats);
 	}
-	public void check() {
-		if (ACorNOT==1){
-			if (AC.get(busno)!=0){
-				System.out.println("thankyou for booking your ticket is conformed");
-				int A =AC.get(busno);
-			    AC.put(busno,A-1);
-			}
-			else{
-				System.out.println("Sorry! there is no more seats in bus");
-			}
-		}
-		else if (ACorNOT==0) {
-			if (NONAC.get(busno)!=0){
-				System.out.println("thankyou for booking your ticket is conformed");
-				int A =NONAC.get(busno);
-			    NONAC.put(busno,A-1);
-			}
-			else{
-				System.out.println("Sorry! there is no more seats in bus");
-			}
+	void check() {
+//		System.out.println("press 1 to reserve ticket press 0 to cancel ticket");
+//		int option=sc.nextInt();
+		
+		if (totalSeatsInBus==0) {
+			System.out.println("Sorry!Tickets are sold out");
+			
 		}
 		else {
-			System.out.println("your code is not working");
+			reserve();
 		}
-		
+	}
+	void reserve() {
+		System.out.println("your ticket was confirmed");
+		totalSeatsInBus-=1;
+		printSlip();
 		
 	}
+	void cancelTicket() {
+		System.out.println("your ticket was cancelled");
+		totalSeatsInBus+=1;
+	}
+	void printSlip() {
+		System.out.println("customername: "+customername +'\n'+"Bus number"+busNo+'\n'+"Seat Numebr"+seatNo+'\n'+date);
+	}
 }
-public class Bus  {
+class Remainder{
+	
+}
+public class Bus {
 	public static void main(String...args) {
-		System.out.println("Welcoem to travellers"+'\n'+"press 1 for admin or press 0 for customer");
+		Map<String,Integer>buses=new HashMap<>();
+		buses.put("105",50);
+		buses.put("106", 50);
+		buses.put("179",0);
+		boolean reservation=true;
+		while(reservation) {
 		Scanner sc=new Scanner(System.in);
-		int N=sc.nextInt();
-		Busdetails bd=new Busdetails();
-		bd.addval();
-		Customerdetails cd=new Customerdetails();
-		if (N==1) {
-			int function=sc.nextInt();
-			System.out.println("enter 1 to fetch data or press 0 to enter the data");
-			if (function==1) {
-				bd.getdata();
-			}
-			else if(function==0) {
-				bd.setdata();
-			}
+		System.out.println("press 1 to book ticket || press 0 to cancel ticket || press 2 to exit");
+		int option=sc.nextInt();
+		if (option==2) {
+			return;
 		}
-		else if (N==0) {
-			System.out.println("Thankyou for choosing our travels");
-			System.out.println("enter name");
-			String Name=sc.next();
-			System.out.println("enter your age");
-			int Age=sc.nextInt();
-			System.out.println("enter bus number");
-			int busno=sc.nextInt();
-			System.out.println("enter prefered seat number");
-			int seatno=sc.nextInt();
-			System.out.println("enter travelling date");
-			String Date=sc.next();
-			System.out.println("enter yes if AC or enter NO is NONAC");
-			int AC=sc.nextInt();
-			cd.setval(Name,Age,busno,seatno,Date,AC);
-			cd.check();
+		System.out.println("Enter name");
+		String name=sc.next();
+		System.out.println("Enter bus ID");
+		String busId=sc.next();
+		System.out.println("Enter Bus Number");
+		int busNo=sc.nextInt();
+		System.out.println("Enter date");
+		String date=sc.next();
+		if (option==2){
+			return;
 		}
 		
+		else if (option==0){
+			Reservation rev=new Reservation(name,busId,busNo,date,buses.get(busId));
+			rev.cancelTicket();
+		}
+		else if (option==1){
+			User customer=new User(name,busId,busNo,date,buses.get(busId));
+			Reservation rev=new Reservation(name,busId,busNo,date,buses.get(busId));
+			rev.check();
+		}}
+//		List<String[]>user=new ArrayList<>();
+//		String[]user1= {"Dharan","105","45","05/02/2002"};
+//		String[]user2= {"Kumar","106","32","05/04/2002"};
+//		String[]user3= {"Karthic","179","16","05/05/2002"};
+//		user.add(user1);
+//		user.add(user2);
+//		user.add(user3);
+//		Map<String,Integer>buses=new HashMap<>();
+//		buses.put("105",50);
+//		buses.put("106", 50);
+//		buses.put("179",0);
+//		for(String[] s:user) {
+//			User customer=new User(s,buses.get(s[1]));
+//			Reservation rev=new Reservation(s,buses.get(s[1]));
+//			rev.check();
+//			customer.display();
+//		System.out.println("Enter name");
+//		String name=sc.nextLine();
+//		System.out.println("Enter bus ID");
+//		String busId=sc.nextLine();
+//		System.out.println("Enter Bus Number");
+//		int busNo=sc.nextInt();
+//		System.out.println("Enter date");
+//		String date=sc.next();
+//		User customer=new User(name,busId,busNo,date,buses.get(busId));
+//		Reservation rev=new Reservation(name,busId,busNo,date,buses.get(busId));
+//		rev.check();
+		}
 	}
-}
+
