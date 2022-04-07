@@ -1,6 +1,6 @@
 package solid;
 import java.util.*;
-class Book{
+class Library{
 	void searchByAuthor(String author,String book,String authorName) {
 //		Scanner sc=new Scanner(System.in);
 //		String authorName=sc.nextLine();
@@ -19,8 +19,6 @@ class Book{
 			System.out.println(book+" "+author);
 		}
 	}
-}
-class Register{
 	String[] bookRegister() {
 		Scanner sc=new Scanner(System.in);
 		System.out.println("enter book name");
@@ -42,8 +40,6 @@ class Register{
 		return reg; 
 		
 	}
-}
-class PrintDetails{
 	void printReceiverDetails(String[] details ) {
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Enter student name");
@@ -55,7 +51,8 @@ class PrintDetails{
 		}
 	}
 }
-public class SingleResponsibility {
+
+public class NonSingleRes {
 	public static void main(String...args) {
 		Scanner sc=new Scanner(System.in);
 		Map<String,String>books=new HashMap<>();
@@ -63,7 +60,7 @@ public class SingleResponsibility {
 		books.put("And Then There Were None", "Agatha Christie");
 		books.put("Dream of the RedChamber","Cao Xueqin");
 		books.put("The Hobbit", "J. R. R. Tolkien");
-		Book searchBook=new Book();
+		Library libBooks=new Library();
 		System.out.println("press 1 to search by name or press 2 to search by author");
 		int searchoption=sc.nextInt();
 		sc.nextLine();
@@ -71,29 +68,29 @@ public class SingleResponsibility {
 			System.out.println("enter book name");
 			String name=sc.nextLine();
 		for(Map.Entry e:books.entrySet()) {
-			searchBook.searchByBookname((String) e.getKey(),(String) e.getValue(),name);}}
+			libBooks.searchByBookname((String) e.getKey(),(String) e.getValue(),name);}}
 		
 		else if(searchoption==2) {
 			System.out.println("enter author name");
 			String author=sc.nextLine();
 			for(Map.Entry e:books.entrySet()) {
-			searchBook.searchByAuthor((String) e.getValue(),(String) e.getKey(),author);
+				libBooks.searchByAuthor((String) e.getValue(),(String) e.getKey(),author);
 		}}
-		Register reg=new Register();
+
 		List<String[]>register=new ArrayList<>();
 		System.out.println("Press 1 for student register or press 2 for book register");
 		int registerOption=sc.nextInt();
 		if(registerOption==1) {
-			String registration[]=reg.studentRegister();
+			String registration[]=libBooks.studentRegister();
 			register.add(registration);
 		}
 		else if(registerOption==2){
-			String book[]=reg.bookRegister();
+			String book[]=libBooks.bookRegister();
 			books.put(book[0],book[1]);
 		}
-		PrintDetails print=new PrintDetails();
+
 		for(String[] s:register) {
-		print.printReceiverDetails(s);
+			libBooks.printReceiverDetails(s);
 		}
 
 	}
